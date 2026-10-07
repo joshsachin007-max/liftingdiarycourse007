@@ -85,16 +85,26 @@ export default async function DashboardPage({
           ) : (
         <div className="flex flex-col gap-6">
           {workouts.map((workout) => (
-            <Card key={workout.id}>
+            <Card
+              key={workout.id}
+              className="relative transition-shadow hover:ring-2 hover:ring-foreground/30"
+            >
               <CardHeader>
-                <CardTitle>{workout.name ?? "Workout"}</CardTitle>
+                <CardTitle>
+                  <Link
+                    href={`/dashboard/workout/${workout.id}`}
+                    className="cursor-default after:absolute after:inset-0 after:content-['']"
+                  >
+                    {workout.name ?? "Workout"}
+                  </Link>
+                </CardTitle>
                 <CardDescription>
                   {formatTime(workout.startedAt)}
                   {workout.completedAt
                     ? ` – ${formatTime(workout.completedAt)}`
                     : " · in progress"}
                 </CardDescription>
-                <CardAction>
+                <CardAction className="relative z-10">
                   <Button
                     variant="outline"
                     size="sm"
