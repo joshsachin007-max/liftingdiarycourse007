@@ -87,7 +87,14 @@ export default async function DashboardPage({
           {workouts.map((workout) => (
             <Card key={workout.id}>
               <CardHeader>
-                <CardTitle>{workout.name ?? "Workout"}</CardTitle>
+                <CardTitle>
+                  <Link
+                    href={`/dashboard/workout/${workout.id}`}
+                    className="hover:underline"
+                  >
+                    {workout.name ?? "Workout"}
+                  </Link>
+                </CardTitle>
                 <CardDescription>
                   {formatTime(workout.startedAt)}
                   {workout.completedAt
