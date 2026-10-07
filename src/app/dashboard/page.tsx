@@ -85,9 +85,19 @@ export default async function DashboardPage({
           ) : (
         <div className="flex flex-col gap-6">
           {workouts.map((workout) => (
-            <Card key={workout.id}>
+            <Card
+              key={workout.id}
+              className="relative transition-colors hover:bg-muted/50"
+            >
               <CardHeader>
-                <CardTitle>{workout.name ?? "Workout"}</CardTitle>
+                <CardTitle>
+                  <Link
+                    href={`/dashboard/workout/${workout.id}`}
+                    className="after:absolute after:inset-0 after:content-['']"
+                  >
+                    {workout.name ?? "Workout"}
+                  </Link>
+                </CardTitle>
                 <CardDescription>
                   {formatTime(workout.startedAt)}
                   {workout.completedAt
