@@ -10,6 +10,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import "./globals.css";
+import { ThemeToggle } from "./theme-toggle";
+
+// Runs before first paint so the saved (or system) theme applies without a flash.
+const themeScript = `try{var t=localStorage.getItem("theme");if(t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,8 +34,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-full flex flex-col">
         <ClerkProvider>
           <header className="flex h-16 items-center justify-between gap-4 px-6">
@@ -39,6 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               Lifting Diary
             </Link>
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <Show when="signed-out">
                 <SignInButton mode="modal">
                   <Button variant="ghost">Sign in</Button>
