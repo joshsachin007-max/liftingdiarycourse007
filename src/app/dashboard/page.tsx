@@ -51,18 +51,20 @@ export default async function DashboardPage({
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
       {!hasTz && <TimezoneSync />}
-      <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+        <div className="flex flex-wrap items-center gap-4">
+          <DatePicker value={date} today={todayIn(timeZone)} />
+          <Button
+            nativeButton={false}
+            render={<Link href={`/dashboard/workout/new?date=${date}`} />}
+          >
+            Log New Workout
+          </Button>
+        </div>
+      </div>
 
-      <div className="mt-6 grid gap-6 md:grid-cols-[auto_1fr] md:items-start">
-        <Card className="w-fit">
-          <CardHeader>
-            <CardTitle>Select Date</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <DatePicker value={date} today={todayIn(timeZone)} />
-          </CardContent>
-        </Card>
-
+      <div className="mt-6">
         <div>
           <h2 className="mb-4 text-xl font-medium">
             Workouts for {format(parseISO(date), "do MMM yyyy")}
@@ -70,16 +72,10 @@ export default async function DashboardPage({
 
           {workouts.length === 0 ? (
             <Card>
-              <CardContent className="flex flex-col items-start gap-4">
+              <CardContent>
                 <p className="text-muted-foreground">
                   No workouts logged for this date.
                 </p>
-                <Button
-                  nativeButton={false}
-                  render={<Link href={`/dashboard/workout/new?date=${date}`} />}
-                >
-                  Log New Workout
-                </Button>
               </CardContent>
             </Card>
           ) : (
