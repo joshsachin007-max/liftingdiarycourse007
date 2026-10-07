@@ -10,7 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getWorkout } from "@/data/workouts";
+import {
+  getWorkout,
+  getWorkoutWithExercises,
+  listExercises,
+} from "@/data/workouts";
+import { AddExerciseForm } from "./add-exercise-form";
+import { ExerciseCard } from "./exercise-card";
 import { DEFAULT_TIME_ZONE, isValidTimeZone } from "@/lib/dates";
 import { EditWorkoutForm } from "./edit-workout-form";
 
@@ -26,8 +32,12 @@ export default async function EditWorkoutPage({
   const { workoutId } = await params;
   if (!UUID_RE.test(workoutId)) notFound();
 
-  const workout = await getWorkout(userId, workoutId);
-  if (!workout) notFound();
+  const [workout, logged, exerciseCatalog] = await Promise.all([
+    getWorkout(userId, workoutId),
+    getWorkoutWithExercises(userId, workoutId),
+    listExercises(),
+  ]);
+  if (!workout || !logged) notFound();
 
   const tzCookie = (await cookies()).get("tz")?.value;
   const timeZone = isValidTimeZone(tzCookie) ? tzCookie : DEFAULT_TIME_ZONE;
@@ -49,6 +59,19 @@ export default async function EditWorkoutPage({
           />
         </CardContent>
       </Card>
+
+      <section className="mt-8 flex flex-col gap-4">
+        <h2 className="text-lg font-semibold">Exercises</h2>
+        {logged.exercises.map((exercise) => (
+          <ExerciseCard
+            key={exercise.id}
+            workoutExerciseId={exercise.id}
+            name={exercise.name}
+            sets={exercise.sets}
+          />
+        ))}
+        <AddExerciseForm workoutId={workout.id} exercises={exerciseCatalog} />
+      </section>
     </main>
   );
 }
