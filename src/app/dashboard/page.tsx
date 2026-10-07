@@ -7,6 +7,7 @@ import { TZDate } from "@date-fns/tz";
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -58,7 +59,7 @@ export default async function DashboardPage({
             <CardTitle>Select Date</CardTitle>
           </CardHeader>
           <CardContent>
-            <DatePicker value={date} />
+            <DatePicker value={date} today={todayIn(timeZone)} />
           </CardContent>
         </Card>
 
@@ -93,6 +94,16 @@ export default async function DashboardPage({
                     ? ` – ${formatTime(workout.completedAt)}`
                     : " · in progress"}
                 </CardDescription>
+                <CardAction>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    nativeButton={false}
+                    render={<Link href={`/dashboard/workout/${workout.id}`} />}
+                  >
+                    Edit
+                  </Button>
+                </CardAction>
               </CardHeader>
               <CardContent className="flex flex-col gap-6">
                 {workout.exercises.length === 0 ? (

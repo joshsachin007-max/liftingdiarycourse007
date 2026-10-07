@@ -14,6 +14,8 @@ Available docs:
 - `/docs/data-fetching.md` — Data fetching rules (Server Components only, `/src/data` helpers, Drizzle, per-user access)
 - `/docs/auth.md` — Auth conventions (Clerk only, `auth()` on the server, protecting routes/actions)
 - `/docs/data-mutations.md` — Data mutation rules (`/src/data` helpers, server actions in colocated `actions.ts`, zod validation, no `FormData`)
+- `/docs/server-components.md` — Server Component standards (async `params`/`searchParams` must be awaited, `PageProps` helpers)
+- `/docs/routing.md` — Routing rules (all routes under `/dashboard`, protected via `src/proxy.ts` middleware)
 
 ## Commands
 
